@@ -33,7 +33,8 @@ action:
       onetime_code_entity: >-
         {{ (expand("group.keypad_onetime_codes") | reverse |
         selectattr('state','eq',
-        trigger.event.data.args.code)|first|d('undef')).entity_id|d('undef') }}
+        trigger.event.data.args.code)|first|d('undef')).entity_id|d('undef')
+        }}
       user_name_entity: >-
         {% if user_code_entity == 'undef' %}  undef {% else %} 
         input_text.keypad_name_user_slot_{{user_code_entity[-1]}} {% endif %}
