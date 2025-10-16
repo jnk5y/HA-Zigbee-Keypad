@@ -2,7 +2,7 @@ blueprint:
   name: Keypad - Auth Based On Matched Codes
   description: Authenticate Keypad Based On Matched Codes
   domain: automation
-  source_url: https://github.com/LenirSantiago/HA-Zigbee-Keypad-Xfinity-xhk1-ue/edit/main/blueprints/keypad/auth_based_on_matched_codes.yaml
+  source_url: https://github.com/jnk5y/HA-Zigbee-Keypad-Xfinity-xhk1-ue/edit/main/blueprints/keypad/auth_based_on_matched_codes.yaml
   author: Lenir Santiago
   input:
     action_script:
@@ -25,49 +25,49 @@ condition:
       ignorecase=False) }}
 action:
   - variables:
-      user_code_entity: >-
-        {{ (expand("group.keypad_user_codes") | reverse |
-        selectattr('state','eq',
-        trigger.event.data.args.code)|first|d('undef')).entity_id|d('undef')
-        }}
-      onetime_code_entity: >-
-        {{ (expand("group.keypad_onetime_codes") | reverse |
-        selectattr('state','eq',
-        trigger.event.data.args.code)|first|d('undef')).entity_id|d('undef')
-        }}
-      user_name_entity: >-
-        {% if user_code_entity == 'undef' %}  undef {% else %} 
-        input_text.keypad_name_user_slot_{{user_code_entity[-1]}} {% endif %}
-      user_enabled_entity: >-
-        {% if user_code_entity == 'undef' %}  undef {% else %} 
-        sensor.keypad_enabled_user_slot_{{user_code_entity[-1] }}  {% endif %}
-      user_schedule_enabled_entity: >-
-        {% if user_code_entity == 'undef' %}  undef {% else %}  
-        switch.schedule_keypad_user_slot_{{user_code_entity[-1]}}  {% endif %}
-      onetime_user_enabled_entity: >-
-        {% if onetime_code_entity == 'undef' %}  undef {% else %}  
-        sensor.keypad_enabled_onetime_slot_{{onetime_code_entity[-1]}}  {% endif
-        %}
-      onetime_user_schedule_enabled_entity: >-
-        {% if onetime_code_entity == 'undef' %}  undef {% else %}
-        switch.schedule_keypad_user_slot_{{onetime_code_entity[-1]}}  {% endif
-        %}
-      user_code: "{{states(user_code_entity)}}"
-      user_name: "{{states(user_name_entity)}}"
-      user_enabled: "{{states(user_enabled_entity)}}"
-      user_schedule_enabled: "{{is_state(user_schedule_enabled_entity, 'on')}}"
-      user_schedule_active: >-
-        {{ is_number(state_attr(user_schedule_enabled_entity, 'current_slot'))
-        }}
-      is_onetime_user: "{{ has_value(onetime_code_entity) }}"
-      onetime_user_enabled: "{{states(onetime_user_enabled_entity)}}"
-      onetime_user_schedule_enabled: "{{is_state(onetime_user_schedule_enabled_entity, 'on')}}"
-      onetime_user_schedule_active: >-
-        {{is_number(state_attr(onetime_user_schedule_enabled_entity,'current_slot'))
-        }}
-      keypad_rx_code: "{{trigger.event.data.args.code|d('undef')}}"
-      keypad_rx_arm_mode: "{{trigger.event.data.args.arm_mode|d('undef')}}"
-      keypad_rx_arm_mode_desc: "{{trigger.event.data.args.arm_mode_description|d('undef')}}"
+    user_code_entity: >-
+      {{ (expand("group.keypad_user_codes") | reverse |
+      selectattr('state','eq',
+      trigger.event.data.args.code)|first|d('undef')).entity_id|d('undef')
+      }}
+    onetime_code_entity: >-
+      {{ (expand("group.keypad_onetime_codes") | reverse |
+      selectattr('state','eq',
+      trigger.event.data.args.code)|first|d('undef')).entity_id|d('undef')
+      }}
+    user_name_entity: >-
+      {% if user_code_entity == 'undef' %}  undef {% else %} 
+      input_text.keypad_name_user_slot_{{user_code_entity[-1]}} {% endif %}
+    user_enabled_entity: >-
+      {% if user_code_entity == 'undef' %}  undef {% else %} 
+      sensor.keypad_enabled_user_slot_{{user_code_entity[-1] }}  {% endif %}
+    user_schedule_enabled_entity: >-
+      {% if user_code_entity == 'undef' %}  undef {% else %}  
+      switch.schedule_keypad_user_slot_{{user_code_entity[-1]}}  {% endif %}
+    onetime_user_enabled_entity: >-
+      {% if onetime_code_entity == 'undef' %}  undef {% else %}  
+      sensor.keypad_enabled_onetime_slot_{{onetime_code_entity[-1]}}  {% endif
+      %}
+    onetime_user_schedule_enabled_entity: >-
+      {% if onetime_code_entity == 'undef' %}  undef {% else %}
+      switch.schedule_keypad_user_slot_{{onetime_code_entity[-1]}}  {% endif
+      %}
+    user_code: "{{states(user_code_entity)}}"
+    user_name: "{{states(user_name_entity)}}"
+    user_enabled: "{{states(user_enabled_entity)}}"
+    user_schedule_enabled: "{{is_state(user_schedule_enabled_entity, 'on')}}"
+    user_schedule_active: >-
+      {{ is_number(state_attr(user_schedule_enabled_entity, 'current_slot'))
+      }}
+    is_onetime_user: "{{ has_value(onetime_code_entity) }}"
+    onetime_user_enabled: "{{states(onetime_user_enabled_entity)}}"
+    onetime_user_schedule_enabled: "{{is_state(onetime_user_schedule_enabled_entity, 'on')}}"
+    onetime_user_schedule_active: >-
+      {{is_number(state_attr(onetime_user_schedule_enabled_entity,'current_slot'))
+      }}
+    keypad_rx_code: "{{trigger.event.data.args.code|d('undef')}}"
+    keypad_rx_arm_mode: "{{trigger.event.data.args.arm_mode|d('undef')}}"
+    keypad_rx_arm_mode_desc: "{{trigger.event.data.args.arm_mode_description|d('undef')}}"
   - service: logbook.log
     data:
       message: >-
